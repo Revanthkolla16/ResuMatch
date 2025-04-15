@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Recruiter Registration</title>
+  <link rel="stylesheet" href="/styles1.css">
+</head>
+<body>
+  <div class="container">
+    <h2 class="header">Recruiter Registration</h2>
+    <form action="/recruiter-register" method="POST" class="form">
+      <label for="name">Name:</label><br>
+      <input type="text" id="name" name="name" required class="input"><br><br>
+
+      <label for="email">Email:</label><br>
+      <input type="email" id="email" name="email" required class="input"><br><br>
+
+      <label for="password">Password:</label><br>
+      <input type="password" id="password" name="password" required class="input"><br><br>
+
+      <label for="company">Company:</label><br>
+      <input type="text" id="company" name="company" class="input"><br><br>
+
+      <button type="submit" class="button">Register</button>
+    </form>
+    <p class="link">Already have an account? <a href="/recruiter-login" class="green-link">Login</a></p>
+  </div>
+</body>
+</html>

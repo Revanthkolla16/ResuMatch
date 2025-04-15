@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Resume</title>
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    .upload-box {
+      border: 2px dashed green;
+      border-radius: 10px;
+      padding: 50px;
+      text-align: center;
+      background-color: #f9fff9;
+      margin: 50px auto;
+      width: 60%;
+      color: green;
+    }
+    .upload-box:hover {
+      background-color: #f0fff0;
+    }
+  </style>
+</head>
+<body>
+  <div class="upload-box">
+    <h2>Welcome! Upload Your Resume</h2>
+    <form id="uploadForm" action="/upload-resume" method="POST" enctype="multipart/form-data">
+      <label for="resume">Upload Resume (.pdf only):</label><br><br>
+      <input type="file" id="resume" name="resume" accept=".pdf" required /><br><br>
+      <button type="submit">Upload</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+
+      try {
+        const response = await fetch('/upload-resume', {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          alert('Resume processed successfully!'); // Simple alert for success
+          this.reset(); // Optional: Reset the form after success
+        } else {
+          alert(`Error: ${result.message}`); // Alert for any errors
+        }
+      } catch (error) {
+        alert('An error occurred while uploading the resume. Please try again.');
+        console.error('Upload error:', error);
+      }
+    });
+  </script>
+</body>
+</html>

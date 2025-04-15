@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Recruiter Dashboard</title>
+  <link rel="stylesheet" href="/styles1.css">
+</head>
+<body>
+  <div class="container">
+    <h2 class="header">Welcome, Recruiter!</h2>
+    <div class="search-section">
+      <label for="jobDescription">Enter Job Description or Keywords:</label><br>
+      <textarea id="jobDescription" name="jobDescription" rows="4" cols="50" class="textarea"></textarea><br><br>
+      <button onclick="searchCandidates()" class="button">Search Candidates</button>
+    </div>
+
+    <div id="results" class="results"></div>
+  </div>
+
+  <script>
+    async function searchCandidates() {
+      const jobDescription = document.getElementById('jobDescription').value;
+      const response = await fetch('/search-candidates', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jobDescription })
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        displayCandidates(data.candidates);
+      } else {
+        alert(data.message);
+      }
+    }
+
+    function displayCandidates(candidates) {
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = '<h3 class="subheader">Matching Candidates:</h3>';
+      candidates.forEach(candidate => {
+        resultsDiv.innerHTML += `
+          <div class="candidate">
+            <p>Name: ${candidate.name}, Skills: ${candidate.skills}</p>
+            <button onclick="shortlist(${candidate.id})" class="button small">Shortlist</button>
+            <button onclick="scheduleInterview(${candidate.id})" class="button small green">Contact for Interview</button>
+          </div>
+        `;
+      });
+    }
+
+    async function shortlist(candidateId) {
+      const response = await fetch('/shortlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ candidateId })
+      });
+      const data = await response.json();
+      alert(data.message);
+    }
+
+    async function scheduleInterview(candidateId) {
+      const response = await fetch('/schedule-interview', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ candidateId })
+      });
+      const data = await response.json();
+      alert(data.message);
+    }
+  </script>
+</body>
+</html>
